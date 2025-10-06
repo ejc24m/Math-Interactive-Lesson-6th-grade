@@ -1,0 +1,319 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2865
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Interactive Lesson: Variables and Equations</title>\
+    <script src="https://cdn.tailwindcss.com"></script>\
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">\
+    <style>\
+        body \{\
+            font-family: 'Inter', sans-serif;\
+        \}\
+        .scale-beam \{\
+            transition: transform 0.5s ease-in-out;\
+        \}\
+        .scale-item \{\
+            transition: all 0.5s ease-in-out;\
+        \}\
+        .fade-in \{\
+            animation: fadeIn 0.5s ease-in-out forwards;\
+        \}\
+        @keyframes fadeIn \{\
+            from \{ opacity: 0; transform: translateY(10px); \}\
+            to \{ opacity: 1; transform: translateY(0); \}\
+        \}\
+    </style>\
+</head>\
+<body class="bg-stone-50 text-stone-800">\
+    <!-- Chosen Palette: Warm Neutrals -->\
+    <!-- Application Structure Plan: The SPA is structured as a step-by-step interactive lesson, mirroring the pedagogical flow of the source report (Hook, Instruction, Guided Practice, Independent Practice). This sequential, task-oriented structure was chosen over a dashboard because the source material is a lesson plan, designed to be consumed in a specific order to build understanding. Users navigate through distinct, interactive sections that visually and functionally represent each stage of the lesson, transforming a static plan into an active learning tool. -->\
+    <!-- Visualization & Content Choices: \
+        - Report Info: Learning Objectives -> Goal: Inform -> Presentation: Styled HTML list. -> Interaction: Static. -> Justification: Clearly sets goals upfront.\
+        - Report Info: Mystery Box Analogy -> Goal: Engage/Introduce -> Presentation: HTML/CSS Balance Scale visual. -> Interaction: Button click to visually solve the puzzle. -> Justification: A visual metaphor for "balance" is more effective for 6th graders than text alone.\
+        - Report Info: Definitions (Variable, Equation) -> Goal: Inform -> Presentation: Styled text cards. -> Interaction: Static. -> Justification: Isolates key concepts for clarity and retention.\
+        - Report Info: Guided Practice Examples -> Goal: Demonstrate -> Presentation: Equations that update step-by-step. -> Interaction: User clicks a "Next Step" button to reveal each stage of solving. -> Justification: Mimics a teacher-led walkthrough, allowing users to control the pace.\
+        - Report Info: Independent Practice Problem -> Goal: Assess -> Presentation: Equation with an input field. -> Interaction: User submits an answer and gets immediate feedback. -> Justification: Active recall and immediate feedback solidify learning.\
+        - Library/Method: All interactions are handled with vanilla JavaScript. All visuals are created with HTML and Tailwind CSS.\
+    -->\
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->\
+\
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">\
+\
+        <header class="text-center mb-8 md:mb-12">\
+            <h1 class="text-3xl sm:text-4xl font-bold text-sky-700">Introduction to Variables</h1>\
+            <p class="text-lg text-stone-600 mt-2">An interactive lesson for 6th Grade Math</p>\
+        </header>\
+\
+        <main class="space-y-12">\
+\
+            <!-- Section 1: Learning Objectives -->\
+            <section id="objectives" class="bg-white p-6 rounded-xl shadow-md border border-stone-200">\
+                <h2 class="text-2xl font-bold text-stone-700 mb-4">Today's Goals</h2>\
+                <p class="mb-4 text-stone-600">By the end of this lesson, you will be able to understand the core concepts of algebra. This interactive guide will walk you through each step, from basic ideas to solving your first equations.</p>\
+                <ul class="list-disc list-inside space-y-2 text-stone-700">\
+                    <li>Define what a **variable** is and understand that $x$ represents an unknown value.</li>\
+                    <li>Explain that an **equation** is like a balanced scale.</li>\
+                    <li>Solve simple equations to find the value of $x$.</li>\
+                </ul>\
+            </section>\
+\
+            <!-- Section 2: The Mystery Box (Hook) -->\
+            <section id="hook" class="bg-white p-6 rounded-xl shadow-md border border-stone-200 text-center">\
+                <h2 class="text-2xl font-bold text-stone-700 mb-2">The Mystery Box Challenge</h2>\
+                <p class="mb-6 text-stone-600 max-w-2xl mx-auto">Let's start with a puzzle. Imagine a perfectly balanced scale. We know what's on both sides, except for one mystery box. Your challenge is to figure out what's inside the box to keep the scale balanced.</p>\
+                \
+                <div class="w-full max-w-md mx-auto p-4">\
+                    <!-- Scale Visual -->\
+                    <div class="relative h-48">\
+                        <!-- Left Side -->\
+                        <div id="left-pan" class="absolute top-12 left-0 w-2/5 h-20 bg-amber-200 rounded-lg flex items-center justify-center gap-1 p-2 scale-item">\
+                            <div class="font-mono text-lg text-amber-800 flex items-center gap-2">\
+                                <span id="left-cubes-text">4</span> <span class="text-2xl">\uc0\u55358 \u56778 </span> +\
+                            </div>\
+                            <div class="w-10 h-10 bg-sky-500 rounded flex items-center justify-center text-2xl font-bold text-white mystery-box">?</div>\
+                        </div>\
+                        <!-- Right Side -->\
+                        <div id="right-pan" class="absolute top-12 right-0 w-2/5 h-20 bg-amber-200 rounded-lg flex items-center justify-center gap-1 p-2 scale-item">\
+                             <div class="font-mono text-lg text-amber-800 flex items-center gap-2">\
+                                <span id="right-cubes-text">10</span> <span class="text-2xl">\uc0\u55358 \u56778 </span>\
+                            </div>\
+                        </div>\
+                        <!-- Beam -->\
+                        <div id="scale-beam" class="scale-beam absolute top-10 left-0 w-full h-2 bg-stone-400 rounded-full"></div>\
+                        <!-- Base -->\
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-24 bg-stone-400"></div>\
+                        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-stone-400 rounded-t-lg"></div>\
+                    </div>\
+                </div>\
+\
+                <p id="scale-equation" class="text-2xl font-mono my-4 text-stone-700">$4 + ? = 10$</p>\
+                <button id="solve-scale-btn" class="bg-sky-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-sky-700 transition-colors">Solve the Mystery</button>\
+                <div id="scale-explanation" class="mt-4 text-sky-700 font-semibold text-lg h-6"></div>\
+            </section>\
+\
+            <!-- Section 3: Definitions -->\
+            <section id="definitions" class="bg-white p-6 rounded-xl shadow-md border border-stone-200">\
+                <h2 class="text-2xl font-bold text-stone-700 mb-4">Building Blocks of Algebra</h2>\
+                <p class="mb-6 text-stone-600">The "mystery box" has a special name in math. Understanding these key terms is the first step to becoming an expert equation solver. These are the fundamental rules of algebra.</p>\
+                <div class="grid md:grid-cols-2 gap-6">\
+                    <div class="bg-stone-100 p-4 rounded-lg border">\
+                        <h3 class="font-bold text-lg text-stone-800">Variable</h3>\
+                        <p class="text-stone-600 mt-1">In math, we use a letter (like $x$) to represent an unknown number. This is our "mystery box." So, instead of $4 + ? = 10$, we write: <span class="font-mono bg-stone-200 px-2 py-1 rounded">$4 + x = 10$</span></p>\
+                    </div>\
+                    <div class="bg-stone-100 p-4 rounded-lg border">\
+                        <h3 class="font-bold text-lg text-stone-800">Equation</h3>\
+                        <p class="text-stone-600 mt-1">An equation is a statement that two things are equal. The equals sign (=) is the center of our balanced scale. It means the value on the left side is exactly the same as the value on the right side.</p>\
+                    </div>\
+                </div>\
+                <div class="mt-6 bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg">\
+                    <h3 class="font-bold">The Golden Rule of Equations</h3>\
+                    <p>To keep the scale balanced, whatever you do to one side of an equation, you **MUST** do to the other side.</p>\
+                </div>\
+            </section>\
+            \
+            <!-- Section 4: Guided Practice -->\
+            <section id="guided-practice" class="bg-white p-6 rounded-xl shadow-md border border-stone-200">\
+                <h2 class="text-2xl font-bold text-stone-700 mb-2">Let's Solve Together</h2>\
+                <p class="mb-6 text-stone-600">Now, let's use the Golden Rule to solve some equations. We'll walk through it one step at a time. Your goal is to get the variable ($x$) all by itself on one side of the equals sign. Click "Next Step" to see how it's done.</p>\
+                \
+                <div id="guided-container">\
+                    <!-- Guided problem will be injected here -->\
+                </div>\
+            </section>\
+\
+            <!-- Section 5: Independent Practice -->\
+            <section id="independent-practice" class="bg-white p-6 rounded-xl shadow-md border border-stone-200">\
+                <h2 class="text-2xl font-bold text-stone-700 mb-2">Now, You Try!</h2>\
+                <p class="mb-6 text-stone-600">You've learned the rules and seen some examples. Now it's your turn to be the detective and find the value of $x$. Type your answer and check your work.</p>\
+\
+                <div class="bg-stone-100 p-6 rounded-lg text-center border">\
+                    <p class="text-3xl font-mono text-stone-800 mb-4" id="practice-equation"></p>\
+                    <div class="flex justify-center items-center gap-4">\
+                        <span class="text-3xl font-mono text-stone-800">$x =$</span>\
+                        <input type="number" id="practice-input" class="w-24 text-center text-2xl font-mono border-2 border-stone-300 rounded-lg p-2 focus:border-sky-500 focus:ring-sky-500" placeholder="#">\
+                    </div>\
+                    <div class="mt-4">\
+                        <button id="check-answer-btn" class="bg-sky-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-sky-700 transition-colors">Check Answer</button>\
+                        <button id="new-problem-btn" class="bg-stone-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-stone-600 transition-colors ml-2">New Problem</button>\
+                    </div>\
+                    <p id="feedback-message" class="mt-4 h-6 font-semibold"></p>\
+                </div>\
+            </section>\
+\
+             <!-- Section 6: Closure -->\
+            <section id="closure" class="text-center">\
+                 <h2 class="text-2xl font-bold text-stone-700 mb-4">Great Job!</h2>\
+                 <p class="text-stone-600 max-w-2xl mx-auto">You've just taken your first steps into algebra! Remember the key ideas: a **variable** is a mystery number, an **equation** is a balanced scale, and the **Golden Rule** is to always do the same thing to both sides. Keep practicing, and you'll be an expert in no time.</p>\
+            </section>\
+\
+        </main>\
+    </div>\
+\
+    <script>\
+        document.addEventListener('DOMContentLoaded', function() \{\
+\
+            // --- Section 2: Mystery Box Logic ---\
+            const solveScaleBtn = document.getElementById('solve-scale-btn');\
+            const scaleEquation = document.getElementById('scale-equation');\
+            const scaleExplanation = document.getElementById('scale-explanation');\
+            const mysteryBox = document.querySelector('.mystery-box');\
+            const leftCubes = document.getElementById('left-cubes-text');\
+\
+            solveScaleBtn.addEventListener('click', () => \{\
+                scaleEquation.innerHTML = '$4 + x = 10$';\
+                mysteryBox.textContent = 'x';\
+                \
+                setTimeout(() => \{\
+                    scaleExplanation.textContent = 'To find x, we remove 4 from both sides...';\
+                    scaleExplanation.classList.add('fade-in');\
+                \}, 500);\
+\
+                setTimeout(() => \{\
+                    leftCubes.textContent = '';\
+                    document.getElementById('right-cubes-text').textContent = '6';\
+                \}, 1500);\
+\
+                setTimeout(() => \{\
+                    scaleEquation.innerHTML = '$x = 6$';\
+                    mysteryBox.textContent = '6';\
+                    scaleExplanation.textContent = 'The mystery box must be 6!';\
+                \}, 2500);\
+                \
+                solveScaleBtn.disabled = true;\
+                solveScaleBtn.classList.add('bg-stone-400', 'cursor-not-allowed');\
+                solveScaleBtn.classList.remove('hover:bg-sky-700');\
+            \});\
+\
+            // --- Section 4: Guided Practice Logic ---\
+            const guidedProblems = [\
+                \{\
+                    start: '$x + 7 = 15$',\
+                    steps: [\
+                        \{ text: 'To isolate $x$, we do the inverse of adding 7, which is subtracting 7.', eq: '$x + 7 - 7 = 15 - 7$' \},\
+                        \{ text: 'Now, we simplify both sides.', eq: '$x = 8$' \},\
+                        \{ text: 'Solved! Press Next to try another one.', eq: '$x = 8$' \}\
+                    ]\
+                \},\
+                \{\
+                    start: '$x - 3 = 9$',\
+                    steps: [\
+                        \{ text: 'The inverse of subtracting 3 is adding 3. Let\\'s do it to both sides.', eq: '$x - 3 + 3 = 9 + 3$' \},\
+                        \{ text: 'Now, we simplify both sides.', eq: '$x = 12$' \},\
+                        \{ text: 'You got it!', eq: '$x = 12$' \}\
+                    ]\
+                \}\
+            ];\
+\
+            let currentProblemIndex = 0;\
+            let currentStepIndex = -1;\
+            const guidedContainer = document.getElementById('guided-container');\
+\
+            function renderGuidedProblem() \{\
+                const problem = guidedProblems[currentProblemIndex];\
+                currentStepIndex = -1;\
+\
+                guidedContainer.innerHTML = `\
+                    <div class="bg-stone-100 p-6 rounded-lg border">\
+                        <p class="text-3xl font-mono text-stone-800 text-center mb-4" id="guided-equation">$\{problem.start\}</p>\
+                        <p class="text-center text-stone-600 h-6 mb-4" id="guided-explanation"></p>\
+                        <div class="text-center">\
+                            <button id="guided-next-btn" class="bg-amber-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-amber-600 transition-colors">Next Step</button>\
+                        </div>\
+                    </div>\
+                `;\
+\
+                document.getElementById('guided-next-btn').addEventListener('click', nextGuidedStep);\
+            \}\
+\
+            function nextGuidedStep() \{\
+                currentStepIndex++;\
+                const problem = guidedProblems[currentProblemIndex];\
+                const equationEl = document.getElementById('guided-equation');\
+                const explanationEl = document.getElementById('guided-explanation');\
+                const nextBtn = document.getElementById('guided-next-btn');\
+\
+                if (currentStepIndex < problem.steps.length) \{\
+                    equationEl.innerHTML = problem.steps[currentStepIndex].eq;\
+                    explanationEl.textContent = problem.steps[currentStepIndex].text;\
+                    if(currentStepIndex === problem.steps.length - 1) \{\
+                        nextBtn.textContent = "Next Problem";\
+                    \}\
+                \} else \{\
+                    currentProblemIndex = (currentProblemIndex + 1) % guidedProblems.length;\
+                    renderGuidedProblem();\
+                \}\
+            \}\
+            \
+            // --- Section 5: Independent Practice Logic ---\
+            const practiceEquationEl = document.getElementById('practice-equation');\
+            const practiceInput = document.getElementById('practice-input');\
+            const checkBtn = document.getElementById('check-answer-btn');\
+            const newProblemBtn = document.getElementById('new-problem-btn');\
+            const feedbackMessage = document.getElementById('feedback-message');\
+            \
+            let currentPracticeProblem = \{\};\
+\
+            function generatePracticeProblem() \{\
+                const isAddition = Math.random() > 0.5;\
+                const num1 = Math.floor(Math.random() * 10) + 1; // 1 to 10\
+                const answer = Math.floor(Math.random() * 15) + 2; // 2 to 16\
+                \
+                if (isAddition) \{\
+                    // x + num1 = answer + num1\
+                    const num2 = answer + num1;\
+                    currentPracticeProblem = \{\
+                        equation: `$x + $\{num1\} = $\{num2\}$`,\
+                        answer: answer\
+                    \};\
+                \} else \{\
+                    // x - num1 = answer\
+                    const num2 = answer;\
+                    currentPracticeProblem = \{\
+                        equation: `$x - $\{num1\} = $\{num2\}$`,\
+                        answer: answer + num1\
+                    \};\
+                \}\
+\
+                practiceEquationEl.innerHTML = currentPracticeProblem.equation;\
+                practiceInput.value = '';\
+                feedbackMessage.textContent = '';\
+                feedbackMessage.className = 'mt-4 h-6 font-semibold';\
+                practiceInput.focus();\
+            \}\
+\
+            function checkAnswer() \{\
+                const userAnswer = parseInt(practiceInput.value, 10);\
+                if (userAnswer === currentPracticeProblem.answer) \{\
+                    feedbackMessage.textContent = 'Correct! Nicely done!';\
+                    feedbackMessage.classList.add('text-green-600');\
+                \} else \{\
+                    feedbackMessage.textContent = 'Not quite, try again!';\
+                    feedbackMessage.classList.add('text-red-600');\
+                \}\
+            \}\
+\
+            checkBtn.addEventListener('click', checkAnswer);\
+            newProblemBtn.addEventListener('click', generatePracticeProblem);\
+            practiceInput.addEventListener('keyup', (event) => \{\
+                if(event.key === 'Enter') \{\
+                    checkAnswer();\
+                \}\
+            \});\
+\
+            // Initial Load\
+            renderGuidedProblem();\
+            generatePracticeProblem();\
+\
+        \});\
+    </script>\
+</body>\
+</html>\
+}
